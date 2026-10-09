@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Simonov Tech — разработка игр</title>
+  <meta name="description" content="Simonov Tech — современная разработка игр разного уровня сложности: проекты в Steam и VK Mini Apps.">
+  <meta name="theme-color" content="#06060b">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Simonov Tech — разработка игр">
+  <meta property="og:description" content="Современная разработка игр разного уровня сложности: Steam и VK Mini Apps.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&family=Unbounded:wght@500;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo" aria-label="Simonov Tech — на главную">
+        <img class="logo__mark" src="assets/logo-mark.svg" alt="" width="40" height="40">
+        <span class="logo__text">
+          <span class="logo__name" data-scramble-hover>SIMONOV</span>
+          <span class="logo__sub">.tech</span>
+        </span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Основная навигация">
+        <a href="#projects">Проекты</a>
+        <a href="#about">Подход</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div class="hero__badge" data-reveal><span class="dot"></span>game development studio</div>
+      <h1 class="hero__title">
+        <span class="hero__line" data-reveal style="--d:.1s"><span data-scramble>SIMONOV</span></span>
+        <span class="hero__line" data-reveal style="--d:.2s"><span class="gradient-text glitch" data-text="TECH" data-scramble>TECH</span></span>
+      </h1>
+      <p class="hero__lead" data-reveal style="--d:.3s">
+        Современная разработка игр разного уровня сложности — от&nbsp;лёгких казуальных проектов для&nbsp;VK&nbsp;Mini&nbsp;Apps до&nbsp;игр в&nbsp;Steam.
+      </p>
+      <div class="terminal" data-reveal style="--d:.4s">
+        <span class="terminal__prompt">~/simonov-tech&nbsp;$</span>
+        <span class="terminal__text" id="typed"></span><span class="terminal__caret"></span>
+      </div>
+      <div class="hero__actions" data-reveal style="--d:.5s">
+        <a class="btn btn--primary magnetic" href="#projects">
+          Смотреть проекты
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></svg>
+        </a>
+        <a class="btn btn--ghost magnetic" href="#contact">Связаться</a>
+      </div>
+      <dl class="stats" id="stats" data-reveal style="--d:.6s"></dl>
+      <a href="#projects" class="scroll-hint" aria-label="Прокрутить к проектам"><span></span></a>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" id="marquee"></div>
+    </div>
+
+    <section class="section container" id="projects">
+      <div class="section__head">
+        <div data-reveal>
+          <span class="eyebrow">// 01 — портфолио</span>
+          <h2 class="section__title">Готовые <span class="gradient-text">проекты</span></h2>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Фильтр по платформе" data-reveal style="--d:.15s">
+          <span class="filters__pill" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="section container" id="about">
+      <div class="section__head">
+        <div data-reveal>
+          <span class="eyebrow">// 02 — подход</span>
+          <h2 class="section__title">От идеи <span class="gradient-text">до релиза</span></h2>
+        </div>
+        <p class="section__text" data-reveal style="--d:.15s">
+          Полный цикл разработки: механики, код, баланс и публикация — для браузера, мобильных устройств и ПК.
+        </p>
+      </div>
+      <div class="steps">
+        <article class="step" data-reveal>
+          <span class="step__num">01</span>
+          <h3>Идея и геймдизайн</h3>
+          <p>Продумываю механики, игровой цикл и то, что заставит игрока вернуться ещё раз.</p>
+        </article>
+        <article class="step" data-reveal style="--d:.1s">
+          <span class="step__num">02</span>
+          <h3>Прототип</h3>
+          <p>Быстро собираю играбельную версию, чтобы проверить главное — интересно ли играть.</p>
+        </article>
+        <article class="step" data-reveal style="--d:.2s">
+          <span class="step__num">03</span>
+          <h3>Разработка</h3>
+          <p>Код, контент, баланс и оптимизация под платформу — от VK Mini Apps до Steam.</p>
+        </article>
+        <article class="step" data-reveal style="--d:.3s">
+          <span class="step__num">04</span>
+          <h3>Релиз и поддержка</h3>
+          <p>Публикация, обновления и работа с отзывами игроков после запуска.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container" id="contact">
+      <div class="cta" data-reveal>
+        <div class="cta__glow" aria-hidden="true"></div>
+        <span class="eyebrow">// 03 — контакты</span>
+        <h2 class="cta__title">Есть идея игры?<br><span class="gradient-text">Давайте обсудим</span></h2>
+        <p class="cta__text">Напишите — расскажу о проектах и отвечу на вопросы.</p>
+        <div class="contacts" id="contacts"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#top" class="logo logo--small" aria-label="Наверх">
+        <img class="logo__mark" src="assets/logo-mark.svg" alt="" width="32" height="32">
+        <span class="logo__text"><span class="logo__name">SIMONOV</span><span class="logo__sub">.tech</span></span>
+      </a>
+      <p class="footer__copy">© <span id="year"></span> Simonov Tech. Сделано с кодом и&nbsp;любовью к&nbsp;играм.</p>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="modal" aria-labelledby="modal-title">
+    <div class="modal__box">
+      <button class="modal__close" type="button" aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal__content" id="modal-content"></div>
+    </div>
+  </dialog>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
