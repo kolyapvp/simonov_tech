@@ -1,0 +1,14 @@
+http:
+  routers:
+    simonov-tech:
+      rule: Host(`simonov-tech.ru`)
+      entryPoints:
+        - websecure
+      service: simonov-tech
+      tls:
+        certResolver: myresolver
+  services:
+    simonov-tech:
+      loadBalancer:
+        servers:
+          - url: http://simonov-tech-web:80
