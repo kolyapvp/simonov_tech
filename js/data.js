@@ -1,9 +1,8 @@
 window.SITE_DATA = {
   contacts: [
-    { label: 'Telegram', url: 'https://t.me/your_username' },
-    { label: 'E-mail', url: 'mailto:you@example.com' },
-    { label: 'VK', url: 'https://vk.com/your_page' },
-    { label: 'Steam', url: 'https://store.steampowered.com/' },
+    { label: 'Telegram', url: 'https://t.me/simonov_rich' },
+    { label: 'E-mail', url: 'mailto:kolyapvp@ya.ru' },
+    { label: 'VK', url: 'https://vk.ru/simonov_rich' },
   ],
 
   projects: [
