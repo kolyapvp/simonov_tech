@@ -7,6 +7,24 @@ window.SITE_DATA = {
 
   projects: [
     {
+      id: 'arrow-exit',
+      title: 'Стрелки: Выход!',
+      platform: 'vk',
+      genres: ['Головоломка', 'Логика'],
+      short: 'Освободите поле от стрелок в логической головоломке.',
+      description: [
+        'Головоломка со стрелками: освободите игровое поле и пройдите уровень.',
+        'Уровни, испытание дня, достижения и темы оформления — прямо в VK Mini Apps.',
+      ],
+      link: 'https://vk.ru/app54813468',
+      cover: 'assets/projects/arrow-exit/home.webp',
+      images: [
+        'assets/projects/arrow-exit/home.webp',
+        'assets/projects/arrow-exit/gameplay.webp',
+        'assets/projects/arrow-exit/complete.webp',
+      ],
+    },
+    {
       id: 'neon-drift',
       title: 'Neon Drift',
       platform: 'steam',
