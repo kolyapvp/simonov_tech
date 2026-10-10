@@ -27,7 +27,7 @@ jobs:
   deploy:
     needs: check
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, Linux, X64, simonov-tech]
+    runs-on: [self-hosted, Linux, X64, simonov-tech-production-82]
     timeout-minutes: 5
     concurrency:
       group: simonov-tech-production
@@ -43,3 +43,10 @@ jobs:
         run: python3 scripts/check_site.py
       - name: Публикация и проверка версии
         run: python3 scripts/deploy.py "$GITHUB_SHA"
+      - name: Проверка публичного HTTPS
+        run: |
+          published_sha="$(curl --fail --silent --show-error --max-time 15 --retry 3 --retry-all-errors https://simonov-tech.ru/version.txt)"
+          if [ "$published_sha" != "$GITHUB_SHA" ]; then
+            echo "Публичный сайт отвечает другой версией: $published_sha"
+            exit 1
+          fi
