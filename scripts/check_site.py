@@ -28,7 +28,11 @@ def public_files(root):
 
 class References(HTMLParser):
     def handle_starttag(self, tag, attrs):
+        if tag == 'script' and not dict(attrs).get('src'):
+            raise ValueError('Встроенный JavaScript запрещён политикой CSP')
         for key, value in attrs:
+            if key.startswith('on'):
+                raise ValueError(f'Встроенный обработчик запрещён политикой CSP: {key}')
             if key not in ('src', 'href') or not value:
                 continue
             url = urlsplit(value)
