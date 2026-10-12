@@ -24,107 +24,7 @@
 
   const safeUrl = (url) => (/^(https?:|mailto:|tg:)/i.test(String(url || '')) ? url : '#');
 
-  const hash = (str) => {
-    let h = 2166136261;
-    for (const ch of String(str)) {
-      h ^= ch.codePointAt(0);
-      h = Math.imul(h, 16777619);
-    }
-    return h >>> 0;
-  };
-
-  const rng = (seed) => {
-    let s = seed >>> 0 || 1;
-    return () => {
-      s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-      return s / 4294967296;
-    };
-  };
-
-  function placeholderArt(seed, palette) {
-    const [a, b, c] = palette && palette.length >= 3 ? palette : ['#8b5cf6', '#f472b6', '#22d3ee'];
-    const r = rng(seed);
-    const W = 1600;
-    const H = 900;
-    const hz = Math.round(H * (0.56 + r() * 0.08));
-    const sunR = 120 + r() * 110;
-    const sunX = W * (0.22 + r() * 0.56);
-    const sunY = hz - sunR * (0.25 + r() * 0.45);
-    const f = (n) => n.toFixed(1);
-
-    let stars = '';
-    for (let i = 0; i < 110; i++) {
-      stars += `<circle cx="${f(r() * W)}" cy="${f(r() * hz * 0.9)}" r="${(r() * 1.8 + 0.3).toFixed(2)}" fill="#fff" opacity="${(r() * 0.7 + 0.15).toFixed(2)}"/>`;
-    }
-
-    let bars = '';
-    for (let i = 0; i < 7; i++) {
-      bars += `<rect x="0" y="${f(sunY + sunR * 0.08 + i * sunR * 0.14)}" width="${W}" height="${f(2 + i * 2.4)}" fill="#000"/>`;
-    }
-
-    const ridge = (amp, step, fill, opacity) => {
-      let d = `M0 ${hz}`;
-      for (let x = 0; x <= W + step; x += step) d += ` L${x} ${f(hz - r() * amp)}`;
-      return `<path d="${d} L${W + step} ${hz} Z" fill="${fill}" opacity="${opacity}"/>`;
-    };
-
-    let grid = '';
-    for (let i = -24; i <= 24; i++) grid += `<line x1="${W / 2}" y1="${hz}" x2="${W / 2 + i * 150}" y2="${H}"/>`;
-    for (let i = 1; i <= 16; i++) {
-      const y = hz + (H - hz) * (i / 16) ** 2;
-      grid += `<line x1="0" y1="${f(y)}" x2="${W}" y2="${f(y)}"/>`;
-    }
-
-    const variant = seed % 3;
-    let extra = '';
-    if (variant === 1) {
-      const px = W * (0.1 + r() * 0.8);
-      const py = hz * (0.15 + r() * 0.25);
-      const pr = 40 + r() * 50;
-      extra = `<g opacity=".9"><circle cx="${f(px)}" cy="${f(py)}" r="${f(pr)}" fill="url(#planet)"/><ellipse cx="${f(px)}" cy="${f(py)}" rx="${f(pr * 1.9)}" ry="${f(pr * 0.38)}" fill="none" stroke="${c}" stroke-width="3" opacity=".7" transform="rotate(-18 ${f(px)} ${f(py)})"/></g>`;
-    } else if (variant === 2) {
-      const dx = W * (0.15 + r() * 0.7);
-      const dy = hz + (H - hz) * 0.45;
-      const s = 70 + r() * 40;
-      extra = `<g filter="url(#soft)"><path d="M${f(dx)} ${f(dy - s * 1.4)} L${f(dx + s)} ${f(dy)} L${f(dx)} ${f(dy + s * 0.5)} L${f(dx - s)} ${f(dy)} Z" fill="${c}" opacity=".35"/></g><path d="M${f(dx)} ${f(dy - s * 1.4)} L${f(dx + s)} ${f(dy)} L${f(dx)} ${f(dy + s * 0.5)} L${f(dx - s)} ${f(dy)} Z" fill="none" stroke="${c}" stroke-width="4"/><path d="M${f(dx)} ${f(dy - s * 1.4)} L${f(dx)} ${f(dy + s * 0.5)}" stroke="${c}" stroke-width="2" opacity=".6"/>`;
-    }
-
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice">
-<defs>
-<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05040a"/><stop offset=".6" stop-color="${a}" stop-opacity=".45"/><stop offset="1" stop-color="${b}" stop-opacity=".85"/></linearGradient>
-<linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${b}"/></linearGradient>
-<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}" stop-opacity=".35"/><stop offset=".25" stop-color="#07060d"/></linearGradient>
-<linearGradient id="gl" gradientUnits="userSpaceOnUse" x1="0" y1="${hz}" x2="0" y2="${H}"><stop offset="0" stop-color="${c}" stop-opacity=".05"/><stop offset="1" stop-color="${c}" stop-opacity=".75"/></linearGradient>
-<radialGradient id="planet" cx=".35" cy=".35"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${a}"/></radialGradient>
-<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
-<filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
-<mask id="cut"><rect width="${W}" height="${H}" fill="#fff"/>${bars}</mask>
-</defs>
-<rect width="${W}" height="${hz}" fill="url(#sky)"/>
-${stars}
-${extra}
-<circle cx="${f(sunX)}" cy="${f(sunY)}" r="${f(sunR * 1.15)}" fill="${b}" opacity=".55" filter="url(#blur)"/>
-<circle cx="${f(sunX)}" cy="${f(sunY)}" r="${f(sunR)}" fill="url(#sun)" mask="url(#cut)"/>
-${ridge(170, 120, a, 0.35)}
-${ridge(110, 70, '#0a0812', 0.95)}
-<rect y="${hz}" width="${W}" height="${H - hz}" fill="url(#ground)"/>
-<g stroke="url(#gl)" stroke-width="2">${grid}</g>
-<rect y="${hz - 2}" width="${W}" height="4" fill="${c}" opacity=".8" filter="url(#soft)"/>
-<rect y="${hz - 1}" width="${W}" height="2" fill="${c}"/>
-</svg>`;
-
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-  }
-
-  const artCache = new Map();
-  function imagesOf(project) {
-    if (Array.isArray(project.images) && project.images.length) return project.images;
-    if (!artCache.has(project.id)) {
-      const base = hash(project.id || project.title);
-      artCache.set(project.id, [0, 1, 2, 3].map((i) => placeholderArt(base + i * 7919, project.palette)));
-    }
-    return artCache.get(project.id);
-  }
+  const imagesOf = (project) => project.images;
   const coverOf = (project) => project.cover || imagesOf(project)[0];
   const paragraphs = (desc) => (Array.isArray(desc) ? desc : desc ? [desc] : []);
 
@@ -186,12 +86,10 @@ ${ridge(110, 70, '#0a0812', 0.95)}
     }
     grid.innerHTML = projects
       .map((p, i) => {
-        const pf = platformOf(p.platform);
         const tags = (p.genres || []).map((g) => `<li class="tag">${esc(g)}</li>`).join('');
         return `<article class="card" data-reveal style="--d:${(i % 3) * 0.1}s" data-index="${i}" data-platform="${esc(p.platform)}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${esc(p.title)} — подробнее">
           <div class="card__media">
             <img src="${esc(coverOf(p))}" alt="${esc(p.title)}" loading="lazy" decoding="async">
-            <span class="badge badge--${esc(p.platform)} card__badge">${esc(pf.label)}</span>
             <span class="card__open">${ICONS.arrowUpRight}</span>
           </div>
           <div class="card__body">

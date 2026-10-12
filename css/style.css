@@ -338,7 +338,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .card:hover .card__media img { transform: scale(1.08); }
 .card__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, var(--bg-2)); }
 
-.card__badge { position: absolute; top: 16px; left: 16px; z-index: 2; }
 .card__open {
   position: absolute; top: 14px; right: 14px; z-index: 2; display: grid; place-items: center;
   width: 44px; height: 44px; border-radius: 50%;
