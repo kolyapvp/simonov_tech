@@ -105,5 +105,22 @@ window.SITE_DATA = {
         "assets/projects/shaverma/income.webp"
       ]
     },
+    {
+      id: 'durak-club',
+      title: 'Дурак Клуб',
+      platform: 'vk',
+      genres: ['Карточная', 'Онлайн'],
+      short: 'Подкидной и переводной дурак онлайн: с друзьями или ботом.',
+      description: [
+        'Играйте в подкидного и переводного дурака на 36 или 52 карты. Приглашайте друзей за закрытый стол по коду или тренируйтесь с ботом.',
+        'Осваивайте правила в обучении, собирайте рубашки карт и темы стола. Вступайте в кланы, общайтесь в чате и участвуйте в турнирах.',
+      ],
+      link: 'https://vk.ru/app54826587',
+      cover: 'assets/projects/durak-club/lobby.webp',
+      images: [
+        'assets/projects/durak-club/lobby.webp',
+        'assets/projects/durak-club/tournaments.webp',
+      ],
+    },
   ],
 };
