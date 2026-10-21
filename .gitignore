@@ -3,3 +3,7 @@
 .serena/
 __pycache__/
 deploy/.env
+
+# Локальная конфигурация и инструкции Codex
+/.codex/
+/AGENTS.md
