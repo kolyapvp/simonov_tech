@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Linux, X64, simonov-tech-ci-212]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -27,7 +28,7 @@ jobs:
   deploy:
     needs: check
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, Linux, X64, simonov-tech-production-82]
+    runs-on: [self-hosted, Linux, X64, simonov-tech-ci-212]
     timeout-minutes: 5
     concurrency:
       group: simonov-tech-production

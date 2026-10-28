@@ -68,11 +68,12 @@ Nginx проверяются отдельно на контейнере с ко�
 
 ## Публикация
 
-Адрес: https://simonov-tech.ru/. Сервер: `82.114.226.110`.
+Адрес: https://simonov-tech.ru/. Сервер: `185.244.163.212`.
 
 GitHub Actions (`.github/workflows/site.yml`) проверяет изменения в pull request
-и в `main`. После успешных проверок `main` публикуется отдельным раннером
-`simonov-tech-production-82` с меткой `simonov-tech-production-82`. Ручной запуск доступен через
+из этого репозитория и в `main`. Проверки и публикация выполняются общим
+раннером `simonov-tech-ci-212` на новом хосте, без GitHub-hosted минут.
+Внешние fork PR на production-раннер не допускаются. Ручной запуск доступен через
 Actions → Site CI/CD → Run workflow, для ветки `main`.
 
 Проверки локально (Python 3.10+ и Node.js):
@@ -81,6 +82,10 @@ Actions → Site CI/CD → Run workflow, для ветки `main`.
 python3 scripts/check_site.py
 python3 -m unittest discover -s tests -v
 ```
+
+Раннер входит в общий бюджет CI: максимум 3 ГиБ, MemoryHigh 2816 МиБ,
+резерв хоста 1 ГиБ, swap запрещён; задания сериализует общий admission.
+Старый адрес `82.114.226.110` временно проксирует на новый для закэшированного DNS.
 
 Раннер работает под пользователем `simonov-tech-runner`, без sudo и доступа
 к Docker. Он пишет только версии сайта в `/srv/simonov-tech/releases` и атомарно
@@ -100,14 +105,14 @@ Traefik использует существующую сеть `proxy`, entrypoi
 `deploy/traefik.yml` расположен в `/opt/traefik/dynamic/simonov-tech.yml`.
 Порт Nginx `8098` открыт только на localhost для проверки деплоя.
 
-Для HTTPS A-запись корня домена (`@`) должна указывать на `82.114.226.110`.
+Для HTTPS A-запись корня домена (`@`) должна указывать на `185.244.163.212`.
 Если есть AAAA-запись, она должна вести на этот же сервер с рабочим IPv6
 или быть удалена. HTTPS-сертификат выдаёт Traefik после настройки DNS.
 
 Диагностика на сервере:
 
 ```bash
-systemctl status actions.runner.kolyapvp-simonov_tech.simonov-tech-production-82.service
+systemctl status actions.runner.kolyapvp-simonov_tech.simonov-tech-ci-212.service
 docker logs --tail 50 simonov-tech-web
 curl --fail http://127.0.0.1:8098/version.txt
 curl --fail https://simonov-tech.ru/version.txt
